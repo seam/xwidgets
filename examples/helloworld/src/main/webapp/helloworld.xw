@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view xmlns="http://xwidgets.org/core">
+  <panel align="client">
+    <label value="Hello World!"/>
+    
+    <button value="Click me!">
+      <event type="onclick">
+        <action type="script">
+          <![CDATA[alert("Hi there!");]]>
+        </action>
+      </event>
+    </button>
+    
+    <button value="Change label">
+      <event type="onclick">
+        <action type="script">
+          <![CDATA[arguments[0].parent.children[0].setValue('foo');]]>
+        </action>
+      </event>
+    </button>
+  </panel>
+
+</view>
