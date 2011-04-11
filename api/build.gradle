@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group="org.seam.xwidgets"
+version="3.0.0-SNAPSHOT"
+
+uploadArchives {
+   repositories.mavenDeployer {
+      repository(url: "file://~/.m2/repository/")
+      pom.artifactId = 'seam-xwidgets-api'
+   }
+}

@@ -1,0 +1,21 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+group="org.seam.xwidgets"
+version="3.0.0-SNAPSHOT"
+
+repositories {
+   mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
+}
+
+dependencies {
+   compile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
+}
+
+uploadArchives {
+   repositories.mavenDeployer {
+      repository(url: "file://~/.m2/repository/")
+      pom.artifactId = 'seam-xwidgets-impl'
+   }
+}
