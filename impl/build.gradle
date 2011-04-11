@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
    compile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
+   compile group: 'org.jboss.seam.solder', name: 'seam-solder', version: '3.0.0.Final'
 }
 
 uploadArchives {
