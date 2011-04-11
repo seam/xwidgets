@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 
-group="org.seam.xwidgets"
-version="3.0.0-SNAPSHOT"
+group = "org.jboss.seam.xwidgets"
+version = "3.0.0-SNAPSHOT"
 
 repositories {
    mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
