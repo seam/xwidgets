@@ -1,0 +1,14 @@
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
+  apply plugin: 'idea'
+
+  group = "org.jboss.seam.xwidgets"
+  version = "3.0.0-SNAPSHOT"
+
+  repositories {
+     mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
+  }
+
+  archivesBaseName = "seam-xwidgets-${project.name}"
+}

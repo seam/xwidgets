@@ -1,29 +1,15 @@
-apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'maven'
-apply plugin: 'eclipse'
 
 group = "org.jboss.seam.xwidgets.examples"
-version = "3.0.0-SNAPSHOT"
-
-repositories {
-   mavenLocal()
-   mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
-}
 
 war {
   archiveName = "xwidgets-helloworld.war"
 }
 
 dependencies {
-   compile group: 'org.jboss.seam.xwidgets', name: 'seam-xwidgets', version: '3.0.0-SNAPSHOT'
-   providedCompile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
-   providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.0'
-}
+   compile project(':api')
+   providedCompile 'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.0.Final', 
+                   'javax.enterprise:cdi-api:1.0'
 
-uploadArchives {
-   repositories.mavenDeployer {
-      repository(url: "file://~/.m2/repository/")
-      pom.artifactId = 'xwidgets-helloworld'
-   }
+   runtime project(':impl')
 }
