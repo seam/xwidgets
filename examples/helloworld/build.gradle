@@ -18,6 +18,7 @@ war {
 dependencies {
    compile group: 'org.jboss.seam.xwidgets', name: 'seam-xwidgets', version: '3.0.0-SNAPSHOT'
    providedCompile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
+   providedCompile group: 'javax.enterprise', name: 'cdi-api', version: '1.0'
 }
 
 uploadArchives {
