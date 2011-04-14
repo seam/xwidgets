@@ -6,6 +6,15 @@ subprojects {
   group = "org.jboss.seam.xwidgets"
   version = "3.0.0-SNAPSHOT"
 
+  // Sets up a providedCompile for all projects but the example webapp -- couldn't come up with a better hack
+  if (project.name != 'examples/helloworld') {
+    configurations {
+      providedCompile { transitive = false }
+
+      compile { extendsFrom providedCompile }
+    }
+  }
+
   repositories {
      mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
   }
