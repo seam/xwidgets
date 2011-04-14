@@ -1,25 +1,7 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'eclipse'
-
-group = "org.jboss.seam.xwidgets"
-version = "3.0.0-SNAPSHOT"
-
-repositories {
-   mavenLocal()
-   mavenRepo urls: "https://repository.jboss.org/nexus/content/groups/public"
-}
-
 dependencies {
-   compile group: 'org.xwidgets', name: 'xwidgets', version: '1.0.0-SNAPSHOT'
-   compile group: 'javax.enterprise', name: 'cdi-api', version: '1.0'
-   compile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
-   compile group: 'org.jboss.seam.solder', name: 'seam-solder', version: '3.0.0.Final'
+   compile  project(':api'),
+            'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.0.Final',
+            'javax.enterprise:cdi-api:1.0',
+            'org.jboss.seam.solder:seam-solder:3.0.0.Final'
 }
 
-uploadArchives {
-   repositories.mavenDeployer {
-      repository(url: "file://~/.m2/repository/")
-      pom.artifactId = 'seam-xwidgets-impl'
-   }
-}
