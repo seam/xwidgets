@@ -21,3 +21,7 @@ subprojects {
 
   archivesBaseName = "seam-xwidgets-${project.name}"
 }
+
+// I'm pretty sure we could setup the upload here for the whole project'
+
+dependsOnChildren()

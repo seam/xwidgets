@@ -9,7 +9,7 @@ war {
 dependencies {
    compile project(':api')
    providedCompile 'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.0.Final', 
-                   'javax.enterprise:cdi-api:1.0'
+                   'javax.enterprise:cdi-api:1.0-SP4'
 
    runtime project(':impl')
 }
