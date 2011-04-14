@@ -11,6 +11,8 @@ repositories {
 }
 
 dependencies {
+   compile group: 'org.xwidgets', name: 'xwidgets', version: '1.0.0-SNAPSHOT'
+   compile group: 'javax.enterprise', name: 'cdi-api', version: '1.0'
    compile group: 'org.jboss.spec.javax.servlet', name: 'jboss-servlet-api_3.0_spec', version: '1.0.0.Final'
    compile group: 'org.jboss.seam.solder', name: 'seam-solder', version: '3.0.0.Final'
 }

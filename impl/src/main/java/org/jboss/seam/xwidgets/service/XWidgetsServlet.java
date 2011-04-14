@@ -1,12 +1,16 @@
 package org.jboss.seam.xwidgets.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-import javax.servlet.Servlet;
+import javax.inject.Inject;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.jboss.seam.solder.resourceLoader.ResourceProvider;
 
 /**
  * Main entry point for XWidgets service integration
@@ -14,38 +18,53 @@ import javax.servlet.ServletResponse;
  * @author Shane Bryzak
  *
  */
-public class XWidgetsServlet implements Servlet
+public class XWidgetsServlet extends HttpServlet
 {
+   private static final long serialVersionUID = 5987854458419051909L;
+   
+   @Inject ResourceProvider resourceProvider;
+   
+   private ServletConfig servletConfig;
+   
+   @Override
    public void init(ServletConfig config) throws ServletException
    {
-      // TODO Auto-generated method stub
+      this.servletConfig = config;
+   }   
+
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response) 
+      throws ServletException, IOException
+   {
+      String pathInfo = request.getPathInfo();
+
+      // Nothing to do
+      if (pathInfo == null)
+      {
+         response.sendError(HttpServletResponse.SC_NOT_FOUND, "No path information provided");
+         return;
+      }
+
+      if (pathInfo.startsWith(servletConfig.getServletContext().getContextPath()))
+      {
+         pathInfo = pathInfo.substring(servletConfig.getServletContext().getContextPath().length());
+      }      
       
-   }
-
-   public ServletConfig getServletConfig()
-   {
-      // TODO Auto-generated method stub
-      return null;
-   }
-
-   public void service(ServletRequest req, ServletResponse res)
-         throws ServletException, IOException
-   {
-      System.out.println("Received request");
-      res.getOutputStream().write("XWidgets Service".getBytes());
-      res.getOutputStream().flush();
-   }
-
-   public String getServletInfo()
-   {
-      // TODO Auto-generated method stub
-      return null;
-   }
-
-   public void destroy()
-   {
-      // TODO Auto-generated method stub
-      
+      // Check if this is a resource request
+      if (pathInfo.startsWith("/resources/"))
+      {
+         String resourcePath = pathInfo.substring(11);
+         InputStream is = resourceProvider.loadResourceStream(resourcePath);
+         byte[] buffer = new byte[512];
+         int read = is.read(buffer);
+         
+         while (read != -1)
+         {
+            response.getOutputStream().write(buffer, 0, read);
+            read = is.read(buffer);
+         }
+         response.getOutputStream().flush();
+      }
    }
 
 }
