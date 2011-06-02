@@ -2,6 +2,7 @@ subprojects {
   apply plugin: 'java'
   apply plugin: 'eclipse'
   apply plugin: 'idea'
+  apply plugin: 'maven'
 
   group = "org.jboss.seam.xwidgets"
   version = "3.0.0-SNAPSHOT"

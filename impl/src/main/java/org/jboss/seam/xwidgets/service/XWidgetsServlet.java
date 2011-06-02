@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.solder.resourceLoader.ResourceProvider;
+import org.jboss.logging.Logger;
 
 /**
  * Main entry point for XWidgets service integration
@@ -21,6 +22,8 @@ import org.jboss.seam.solder.resourceLoader.ResourceProvider;
 public class XWidgetsServlet extends HttpServlet
 {
    private static final long serialVersionUID = 5987854458419051909L;
+   
+   private static final Logger log = Logger.getLogger(XWidgetsServlet.class);
    
    @Inject ResourceProvider resourceProvider;
    
@@ -54,6 +57,9 @@ public class XWidgetsServlet extends HttpServlet
       if (pathInfo.startsWith("/resources/"))
       {
          String resourcePath = pathInfo.substring(11);
+         
+         log.info("Processing request for resource: " + resourcePath);
+         
          InputStream is = resourceProvider.loadResourceStream(resourcePath);
          byte[] buffer = new byte[512];
          int read = is.read(buffer);

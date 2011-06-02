@@ -1,3 +1,4 @@
-include 'api', 'impl', 'examples/helloworld'
+include 'api', 'impl'
+//, 'examples/helloworld'
 
 rootProject.name = 'seam-xwidgets'
