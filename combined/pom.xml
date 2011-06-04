@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.jboss.seam.xwidgets</groupId>
+      <artifactId>seam-xwidgets-parent</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
+
+   <artifactId>seam-xwidgets</artifactId>
+
+   <packaging>jar</packaging>
+   <name>Seam XWidgets</name>
+   <!-- url required for JAR Manifest -->
+   <url>${project.parent.url}</url>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <executions>
+               <execution>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                     <createSourcesJar>true</createSourcesJar>
+                     
+                     <filters>
+                       <!--filter>
+                         <artifact>org.jboss.seam.xwidgets:seam-xwidgets-api</artifact>
+                         <excludes>
+                           <exclude>META-INF/beans.xml</exclude>
+                           <exclude>META-INF/maven/**</exclude>
+                         </excludes>
+                       </filter-->
+                       <filter>
+                         <artifact>org.jboss.seam.xwidgets:seam-xwidgets-impl</artifact>
+                         <excludes>
+                           <exclude>META-INF/maven/**</exclude>
+                         </excludes>
+                       </filter>
+                     </filters>
+                     <artifactSet>
+                        <includes>                                                   
+                           <include>org.jboss.seam.xwidgets:seam-xwidgets-impl</include>
+                           <!--include>org.jboss.seam.xwidgets:seam-xwidgets-api</include-->
+                        </includes>
+                     </artifactSet>                     
+                     
+                     <!--promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                     <artifactSet>
+                        <includes>
+                           <include>org.jboss.seam.xwidgets:*</include>
+                        </includes>
+                     </artifactSet>
+                     <filters>
+                        <filter>
+                           <artifact>org.jboss.seam.xwidgets:seam-xwidgets-api</artifact>
+                           <excludes>
+                              <exclude>META-INF/beans.xml</exclude>
+                              <exclude>META-INF/faces-config.xml</exclude>
+                           </excludes>
+                        </filter>
+                     </filters-->
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+
+      <!--dependency>
+         <groupId>org.jboss.seam.xwidgets</groupId>
+         <artifactId>seam-xwidgets-api</artifactId>
+      </dependency-->
+
+      <dependency>
+         <groupId>org.jboss.seam.xwidgets</groupId>
+         <artifactId>seam-xwidgets-impl</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.solder</groupId>
+         <artifactId>seam-solder</artifactId>
+      </dependency>
+
+   </dependencies>
+
+</project>
+

@@ -5,3 +5,4 @@ dependencies {
                    'org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.0.Final'
 }
 
+sourceSets.main.compileClasspath += configurations.providedCompile
