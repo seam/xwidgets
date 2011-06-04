@@ -61,15 +61,25 @@ public class XWidgetsServlet extends HttpServlet
          log.info("Processing request for resource: " + resourcePath);
          
          InputStream is = resourceProvider.loadResourceStream(resourcePath);
-         byte[] buffer = new byte[512];
-         int read = is.read(buffer);
          
-         while (read != -1)
-         {
-            response.getOutputStream().write(buffer, 0, read);
-            read = is.read(buffer);
+         if (is == null) {
+             response.sendError(404);
+             log.error("Specified resource '" + pathInfo + "' not found.");
+         } else {         
+             if (pathInfo.endsWith(".js")) {
+                 response.setContentType("text/javascript");
+             }
+             
+             byte[] buffer = new byte[512];
+             int read = is.read(buffer);
+             
+             while (read != -1)
+             {
+                response.getOutputStream().write(buffer, 0, read);
+                read = is.read(buffer);
+             }
+             response.getOutputStream().flush();
          }
-         response.getOutputStream().flush();
       }
    }
 

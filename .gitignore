@@ -2,6 +2,7 @@ api/build/
 impl/build/
 impl/bin/
 impl/target/
+combined/target/
 /target/
 api/target/
 .classpath
