@@ -21,8 +21,13 @@ subprojects {
   }
 
   archivesBaseName = "seam-xwidgets-${project.name}"
-}
 
-// We could include the basic upload info here too if we wanted.
+  // We could include the basic upload info here too if we wanted.
+  install {
+    repositories.mavenInstaller {
+      pom.scopeMappings.mappings.remove(configurations.providedCompile)
+    }
+  }
+}
 
 dependsOnChildren()
