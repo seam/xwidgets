@@ -36,6 +36,10 @@ org.jboss.seam.xwidgets.RemoteMethodDataSet.prototype.isActive = function() {
   return this.values !== null;
 };
 
+org.jboss.seam.xwidgets.RemoteMethodDataSet.prototype.getValues = function() {
+  return this.values;
+};
+
 org.jboss.seam.xwidgets.RemoteMethodDataSet.prototype.toString = function() {
   return "RemoteMethodDataSet[" + this.remoteClass + "." + this.remoteMethod + "]";
 };
