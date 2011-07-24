@@ -2,6 +2,7 @@ package("org.jboss.seam.xwidgets");
 
 org.jboss.seam.xwidgets.RemoteMethodELResolver = function() {
   xw.NonVisual.call(this);
+  this._className = "org.jboss.seam.xwidgets.RemoteMethodELResolver";
   this.registerProperty("remoteClass");
   this.registerProperty("remoteMethod");
   this.registerProperty("qualifiers");
