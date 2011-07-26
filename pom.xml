@@ -60,6 +60,20 @@
       </dependencies>
    </dependencyManagement>
 
+   <dependencies>
+
+      <dependency>
+         <groupId>org.jboss.seam.remoting</groupId>
+         <artifactId>seam-remoting</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.seam.security</groupId>
+         <artifactId>seam-security</artifactId>
+      </dependency>
+
+   </dependencies>
+
    <profiles>
       <profile>
          <id>distribution</id>
