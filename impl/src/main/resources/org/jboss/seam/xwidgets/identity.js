@@ -37,6 +37,7 @@ org.jboss.seam.xwidgets.Identity.prototype.loginCallback = function(result) {
   if (result === "success") {
     this.loggedIn = true;
     xw.EL.notify("identity");
+    xw.Event.fire("org.jboss.seam.identity.loggedIn");
   }
 };
 
