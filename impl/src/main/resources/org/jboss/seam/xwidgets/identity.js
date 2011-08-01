@@ -18,6 +18,16 @@ org.jboss.seam.xwidgets.Identity.prototype.open = function() {
   xw.EL.registerResolver(this);
 };
 
+org.jboss.seam.xwidgets.Identity.prototype.openIdLogin = function(provider, url) {
+  var that = this;
+  var cb = function(url) { that.openIdCallback(url); };
+  this.identityBean.openIdLogin(provider, url, cb);
+};
+
+org.jboss.seam.xwidgets.Identity.prototype.openIdCallback = function(url) {
+  alert("OpenID url to authenticate: " + url);
+};
+
 org.jboss.seam.xwidgets.Identity.prototype.login = function(username, password) {
   var that = this;
   var cb = function(r) { that.loginCallback(r); };
