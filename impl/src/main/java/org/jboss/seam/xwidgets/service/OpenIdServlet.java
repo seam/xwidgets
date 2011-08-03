@@ -26,7 +26,7 @@ public class OpenIdServlet extends HttpServlet {
     private static final String REQUEST_PATH_CALLBACK = "/callback";
     
     private static final byte[] CALLBACK_CONTENT = ("<html><head></head>" +
-      "<body onload=\"window.opener.org.jboss.seam.xwidgets.Identity.handleOpenIdResponse((window.location+'').split('?')[1]);window.close();\">" +
+      "<body onload=\"window.opener.xwHandleOpenIdResponse((window.location+'').split('?')[1]);window.close();\">" +
       "</body></html>").getBytes();
     
     public static final String PARAM_PROVIDER = "provider";
@@ -35,7 +35,7 @@ public class OpenIdServlet extends HttpServlet {
     private ServletConfig servletConfig;
     
     @Inject Identity identity;
-    @Inject OpenIdAuthenticator authenticator;
+    @Inject OpenIdAjaxAuthenticator authenticator;
     @Inject Instance<CustomOpenIdProvider> customProvider;
     
     public void init(ServletConfig config) throws ServletException {

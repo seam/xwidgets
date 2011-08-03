@@ -19,21 +19,32 @@ org.jboss.seam.xwidgets.Identity.prototype.open = function() {
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.openIdLogin = function(provider, url) {
-  var url = "ajaxopenid/login";
-  if (xw.Sys.isDefined(provider)) {
-    url += "?provider=" + provider;
-  } else if (xw.Sys.isDefined(url)) {
-    url += "?openIdUrl=" + url;
-  }
-  
-  org.jboss.seam.xwidgets.Identity.handleOpenIdResponse = this.openIdCallback;
-  
-  window.open(url, 'openid_popup', 'width=790,height=580');
+  var that = this;
+  var cb = function(redirectUrl) { that.openIdLoginCallback(redirectUrl); };
+  this.identityBean.openIdLogin(provider, url, cb);
 };
 
-org.jboss.seam.xwidgets.Identity.prototype.openIdCallback = function(params) {
-    alert("Got OpenID callback: " + params);
-    alert("Identity: " + this);
+org.jboss.seam.xwidgets.Identity.prototype.openIdLoginCallback = function(url) {
+  window.xwIdentityWidget = this;
+  
+  window.xwHandleOpenIdResponse = function(params) {
+    window.xwIdentityWidget.openIdResponseCallback(params);
+  };
+
+  window.open(url, 'openid_popup', 'width=450,height=500');
+};
+
+org.jboss.seam.xwidgets.Identity.prototype.openIdResponseCallback = function(params) {
+  window.xwIdentityWidget = null;
+  window.xwHandleOpenIdResponse = null;
+
+  var that = this;
+  var cb = function() { that.processOpenIdResponseCallback(); };
+  this.identityBean.processOpenIdResponse(unescape(params), cb);
+};
+
+org.jboss.seam.xwidgets.Identity.prototype.processOpenIdResponseCallback = function(value) {
+  alert("Processed response: " + value);
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.login = function(username, password) {
