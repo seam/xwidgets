@@ -13,4 +13,15 @@
       <servlet-name>XWidgets Servlet</servlet-name>
       <url-pattern>/xwidgets/*</url-pattern>
    </servlet-mapping>
+   
+   <servlet>
+      <servlet-name>OpenID AJAX Servlet</servlet-name>
+      <servlet-class>org.jboss.seam.xwidgets.service.OpenIdServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>OpenID AJAX Servlet</servlet-name>
+      <url-pattern>/ajaxopenid/*</url-pattern>
+   </servlet-mapping>   
 </web-fragment>

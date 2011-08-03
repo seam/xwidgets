@@ -19,13 +19,21 @@ org.jboss.seam.xwidgets.Identity.prototype.open = function() {
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.openIdLogin = function(provider, url) {
-  var that = this;
-  var cb = function(url) { that.openIdCallback(url); };
-  this.identityBean.openIdLogin(provider, url, cb);
+  var url = "ajaxopenid/login";
+  if (xw.Sys.isDefined(provider)) {
+    url += "?provider=" + provider;
+  } else if (xw.Sys.isDefined(url)) {
+    url += "?openIdUrl=" + url;
+  }
+  
+  org.jboss.seam.xwidgets.Identity.handleOpenIdResponse = this.openIdCallback;
+  
+  window.open(url, 'openid_popup', 'width=790,height=580');
 };
 
-org.jboss.seam.xwidgets.Identity.prototype.openIdCallback = function(url) {
-  alert("OpenID url to authenticate: " + url);
+org.jboss.seam.xwidgets.Identity.prototype.openIdCallback = function(params) {
+    alert("Got OpenID callback: " + params);
+    alert("Identity: " + this);
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.login = function(username, password) {
