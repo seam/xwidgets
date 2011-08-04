@@ -3,6 +3,7 @@ package org.jboss.seam.xwidgets.action;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.StringTokenizer;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
@@ -24,6 +25,7 @@ import org.jboss.seam.security.external.spi.OpenIdRelyingPartySpi;
 import org.jboss.seam.xwidgets.dto.AuthResult;
 import org.jboss.seam.xwidgets.service.OpenIdAjaxAuthenticator;
 import org.openid4java.message.MessageException;
+import org.openid4java.message.Parameter;
 import org.openid4java.message.ParameterList;
 import org.picketlink.idm.impl.api.PasswordCredential;
 
@@ -72,16 +74,24 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     @WebRemote
     public AuthResult processOpenIdResponse(String params) throws MessageException {
         
-        AuthResult result = authResult.get();
-        ParameterList paramList;
+        AuthResult result = authResult.get();        
         
-        try {
-            // We need to re-encode the params because ParameterList URL-decodes them (and they're already decoded)
-            paramList = ParameterList.createFromQueryString(URLEncoder.encode(params, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new MessageException("Cannot URL encode query parameters: " + params, e);
-        }
-        
+        ParameterList paramList = new ParameterList();
+
+        StringTokenizer tokenizer = new StringTokenizer(params, "&");
+        while (tokenizer.hasMoreTokens())
+        {
+            String param = tokenizer.nextToken();
+            int posEqual = param.indexOf('=');
+
+            if (posEqual == -1)
+                throw new MessageException("Invalid query parameter, = missing: " + param);
+
+            String key   = param.substring(0, posEqual);
+            String value = param.substring(posEqual + 1);
+
+            paramList.set(new Parameter(key, value));
+        }        
         
         String dialogueId = paramList.getParameterValue(DialogueFilter.DIALOGUE_ID_PARAM);
         if (dialogueId != null) {
