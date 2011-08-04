@@ -1,6 +1,8 @@
 package org.jboss.seam.xwidgets.action;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
@@ -19,6 +21,7 @@ import org.jboss.seam.security.external.openid.OpenIdRpAuthenticationService;
 import org.jboss.seam.security.external.openid.api.OpenIdPrincipal;
 import org.jboss.seam.security.external.openid.providers.CustomOpenIdProvider;
 import org.jboss.seam.security.external.spi.OpenIdRelyingPartySpi;
+import org.jboss.seam.xwidgets.dto.AuthResult;
 import org.jboss.seam.xwidgets.service.OpenIdAjaxAuthenticator;
 import org.openid4java.message.MessageException;
 import org.openid4java.message.ParameterList;
@@ -37,6 +40,8 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     @Inject Instance<OpenIdAjaxAuthenticator> openIdAuthenticator;
     @Inject Instance<CustomOpenIdProvider> customProvider;
     @Inject Instance<OpenIdRpAuthenticationService> authService;
+    
+    @Inject Instance<AuthResult> authResult;
     
     @Inject
     Event<DeferredAuthenticationEvent> deferredAuthentication;    
@@ -65,16 +70,27 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     }
     
     @WebRemote
-    public void processOpenIdResponse(String params) throws MessageException {
+    public AuthResult processOpenIdResponse(String params) throws MessageException {
         
-        ParameterList paramList = ParameterList.createFromQueryString(params);
+        AuthResult result = authResult.get();
+        ParameterList paramList;
+        
+        try {
+            // We need to re-encode the params because ParameterList URL-decodes them (and they're already decoded)
+            paramList = ParameterList.createFromQueryString(URLEncoder.encode(params, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new MessageException("Cannot URL encode query parameters: " + params, e);
+        }
+        
+        
         String dialogueId = paramList.getParameterValue(DialogueFilter.DIALOGUE_ID_PARAM);
         if (dialogueId != null) {
             if (!manager.isExistingDialogue(dialogueId)) {
                 // TODO return an error code here
                 
                 //((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "dialogue " + dialogueId + " does not exist");
-                return;
+                result.setSuccess(false);
+                return result;
             }
             manager.attachDialogue(dialogueId);
         }        
@@ -83,27 +99,34 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
         
         if (manager.isAttached()) {
             manager.detachDialogue();
-        }        
+        }
+        
+        return result;
     }
     
     public void loginSucceeded(OpenIdPrincipal principal, ResponseHolder responseHolder) {
         openIdAuthenticator.get().success(principal);
         deferredAuthentication.fire(new DeferredAuthenticationEvent(true));
+        authResult.get().setSuccess(true);
     }
 
     public void loginFailed(String message, ResponseHolder responseHolder) {
         deferredAuthentication.fire(new DeferredAuthenticationEvent(false));
            // responseHolder.getResponse().sendRedirect(servletContext.getContextPath() + "/AuthenticationFailed.jsf");
-
+        authResult.get().setSuccess(false);
     }    
            
     @WebRemote
-    public String login(String username, String password) {
+    public AuthResult login(String username, String password) {
         identity.setAuthenticatorClass(null);
         credentials.setUsername(username);
         credentials.setCredential(new PasswordCredential(password));
         
-        return identity.login();
+        AuthResult result = authResult.get();
+        
+        result.setSuccess(Identity.RESPONSE_LOGIN_SUCCESS.equals(identity.login()));
+        
+        return result;
     }
     
     @WebRemote

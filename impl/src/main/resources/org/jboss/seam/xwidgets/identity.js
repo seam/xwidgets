@@ -7,6 +7,7 @@ org.jboss.seam.xwidgets.Identity = function() {
   this.identityBean = null;
   
   this.loggedIn = false;
+  this.attribs = {};
 };
 
 org.jboss.seam.xwidgets.Identity.prototype = new xw.NonVisual();
@@ -39,12 +40,8 @@ org.jboss.seam.xwidgets.Identity.prototype.openIdResponseCallback = function(par
   window.xwHandleOpenIdResponse = null;
 
   var that = this;
-  var cb = function() { that.processOpenIdResponseCallback(); };
+  var cb = function(r) { that.loginCallback(r); };
   this.identityBean.processOpenIdResponse(unescape(params), cb);
-};
-
-org.jboss.seam.xwidgets.Identity.prototype.processOpenIdResponseCallback = function(value) {
-  alert("Processed response: " + value);
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.login = function(username, password) {
@@ -63,8 +60,12 @@ org.jboss.seam.xwidgets.Identity.prototype.logout = function() {
 };
 
 org.jboss.seam.xwidgets.Identity.prototype.loginCallback = function(result) {
-  if (result === "success") {
+  if (result.success) {
     this.loggedIn = true;
+    
+    this.attribs.firstname = result.getAttributes().get("firstname");
+    this.attribs.lastname = result.getAttributes().get("lastname");
+    
     xw.EL.notify("identity");
     xw.Event.fire("org.jboss.seam.identity.loggedIn");
   }
