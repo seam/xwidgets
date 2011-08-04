@@ -88,17 +88,18 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     
     public void loginSucceeded(OpenIdPrincipal principal, ResponseHolder responseHolder) {
         openIdAuthenticator.get().success(principal);
-        deferredAuthentication.fire(new DeferredAuthenticationEvent());
+        deferredAuthentication.fire(new DeferredAuthenticationEvent(true));
     }
 
     public void loginFailed(String message, ResponseHolder responseHolder) {
-
+        deferredAuthentication.fire(new DeferredAuthenticationEvent(false));
            // responseHolder.getResponse().sendRedirect(servletContext.getContextPath() + "/AuthenticationFailed.jsf");
 
     }    
            
     @WebRemote
     public String login(String username, String password) {
+        identity.setAuthenticatorClass(null);
         credentials.setUsername(username);
         credentials.setCredential(new PasswordCredential(password));
         
