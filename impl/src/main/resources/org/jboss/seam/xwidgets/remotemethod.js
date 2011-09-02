@@ -29,23 +29,24 @@ org.jboss.seam.xwidgets.RemoteMethod.prototype.open = function() {
     this.bean = Seam.createBean(this.remoteClass);
   }
 
-  if (this.enabled) {
-    if (xw.Sys.isDefined(this.elVariableName)) {
-      xw.EL.registerResolver(this);
-      this.invoke();
-    }
+  if (xw.Sys.isDefined(this.elVariableName)) {
+    xw.EL.registerResolver(this);
   }
+    
+  this.invoke();
 };
 
-org.jboss.seam.xwidgets.RemoteMethod.prototype.invoke = function(params) {
+org.jboss.seam.xwidgets.RemoteMethod.prototype.invoke = function() {
+  if (!this.enabled) return;
+
   var that = this;
   var cb = function(result) { that.callback(result); };
   this.invokeTimestamp = new Date().getTime();  
 
-  if (xw.Sys.isDefined(params)) {
+  if (arguments.length == 0) {
     this.bean[this.remoteMethod](cb);
   } else {
-    Seam.execute(this.bean, this.remoteMethod, params, cb);
+    Seam.execute(this.bean, this.remoteMethod, arguments, cb);
   }
 };
 
