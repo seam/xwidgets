@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.solder.resourceLoader.ResourceProvider;
-import org.jboss.logging.Logger;
+import org.jboss.seam.logging.Logger;
 
 /**
  * Main entry point for XWidgets service integration

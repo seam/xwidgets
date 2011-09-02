@@ -5,13 +5,13 @@
    <parent>
       <groupId>org.jboss.seam</groupId>
       <artifactId>seam-parent</artifactId>
-      <version>10</version>
+      <version>14</version>
    </parent>
 
    <artifactId>seam-xwidgets-parent</artifactId>
    <groupId>org.jboss.seam.xwidgets</groupId>
    <packaging>pom</packaging>
-   <version>3.0.0-SNAPSHOT</version>
+   <version>3.1.0-SNAPSHOT</version>
 
    <name>Seam XWidgets Module</name>
    <description>CDI integration for the XWidgets view framework</description>
@@ -24,7 +24,7 @@
    </modules>
 
    <properties>
-      <seam.version>3.0.0.Final</seam.version>
+      <seam.version>3.1.0.Beta2</seam.version>
    </properties>
 
    <dependencyManagement>
@@ -82,45 +82,6 @@
             <module>examples/helloworld</module>
             <!--module>dist</module-->
          </modules>
-      </profile>
-      <profile>
-         <id>jboss-public-repository</id>
-         <activation>
-            <property>
-               <name>jboss-public-repository</name>
-               <value>!false</value>
-            </property>
-         </activation>
-         <repositories>
-            <repository>
-               <id>jboss-public-repository-group</id>
-               <name>JBoss Public Maven Repository Group</name>
-               <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <releases>
-                  <enabled>true</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </releases>
-               <snapshots>
-                  <enabled>false</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </snapshots>
-            </repository>
-         </repositories>
-         <pluginRepositories>
-            <pluginRepository>
-               <id>jboss-public-repository-group</id>
-               <name>JBoss Public Maven Repository Group</name>
-               <url>http://repository.jboss.org/nexus/content/groups/public</url>
-               <releases>
-                  <enabled>true</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </releases>
-               <snapshots>
-                  <enabled>false</enabled>
-                  <updatePolicy>never</updatePolicy>
-               </snapshots>
-            </pluginRepository>
-         </pluginRepositories>
       </profile>
    </profiles>
 

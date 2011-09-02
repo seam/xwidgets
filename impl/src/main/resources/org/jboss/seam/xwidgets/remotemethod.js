@@ -10,6 +10,7 @@ org.jboss.seam.xwidgets.RemoteMethod = function() {
   
   // The EL variable name that this resolver will bind to
   this.registerProperty("elVariableName");
+  this.registerProperty("enabled", true);
   
   // The remote bean  
   this.bean = null;
@@ -28,17 +29,24 @@ org.jboss.seam.xwidgets.RemoteMethod.prototype.open = function() {
     this.bean = Seam.createBean(this.remoteClass);
   }
 
-  if (xw.Sys.isDefined(this.elVariableName)) {
-    xw.EL.registerResolver(this);
-    this.invoke();
+  if (this.enabled) {
+    if (xw.Sys.isDefined(this.elVariableName)) {
+      xw.EL.registerResolver(this);
+      this.invoke();
+    }
   }
 };
 
-org.jboss.seam.xwidgets.RemoteMethod.prototype.invoke = function() {
+org.jboss.seam.xwidgets.RemoteMethod.prototype.invoke = function(params) {
   var that = this;
   var cb = function(result) { that.callback(result); };
-  this.invokeTimestamp = new Date().getTime();
-  this.bean[this.remoteMethod](cb);
+  this.invokeTimestamp = new Date().getTime();  
+
+  if (xw.Sys.isDefined(params)) {
+    this.bean[this.remoteMethod](cb);
+  } else {
+    Seam.execute(this.bean, this.remoteMethod, params, cb);
+  }
 };
 
 org.jboss.seam.xwidgets.RemoteMethod.prototype.callback = function(result) {
