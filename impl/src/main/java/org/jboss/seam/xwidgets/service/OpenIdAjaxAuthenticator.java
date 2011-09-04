@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.jboss.seam.security.Authenticator;
 import org.jboss.seam.security.external.openid.OpenIdAuthenticator;
 
+/**
+ * Basically the same as OpenIdAuthenticator, however this one captures the URL that the
+ * user would be typically redirected to to authenticate.
+ * 
+ * @author Shane Bryzak
+ *
+ */
 public @SessionScoped class OpenIdAjaxAuthenticator extends OpenIdAuthenticator implements Authenticator, Serializable {
     private static final long serialVersionUID = 7737243244817530552L;
     
