@@ -1,15 +1,11 @@
 package org.jboss.seam.xwidgets.action;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.StringTokenizer;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.remoting.annotations.WebRemote;
 import org.jboss.seam.security.Credentials;
@@ -22,6 +18,7 @@ import org.jboss.seam.security.external.openid.OpenIdRpAuthenticationService;
 import org.jboss.seam.security.external.openid.api.OpenIdPrincipal;
 import org.jboss.seam.security.external.openid.providers.CustomOpenIdProvider;
 import org.jboss.seam.security.external.spi.OpenIdRelyingPartySpi;
+import org.jboss.seam.transaction.Transactional;
 import org.jboss.seam.xwidgets.dto.AuthResult;
 import org.jboss.seam.xwidgets.service.OpenIdAjaxAuthenticator;
 import org.openid4java.message.MessageException;
@@ -71,7 +68,7 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
         return authenticator.getRedirectUrl();        
     }
     
-    @WebRemote
+    @WebRemote @Transactional
     public AuthResult processOpenIdResponse(String params) throws MessageException {
         
         AuthResult result = authResult.get();        
