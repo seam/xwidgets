@@ -63,8 +63,9 @@ org.jboss.seam.xwidgets.Identity.prototype.loginCallback = function(result) {
   if (result.success) {
     this.loggedIn = true;
     
-    this.attribs.firstname = result.getAttributes().get("firstname");
-    this.attribs.lastname = result.getAttributes().get("lastname");
+    this.attribs.firstname = result.getAttributes().get("firstName");
+    this.attribs.lastname = result.getAttributes().get("lastName");
+    this.attribs.email = result.getAttributes().get("email");
     
     xw.EL.notify("identity");
     xw.Event.fire("org.jboss.seam.identity.loggedIn");
