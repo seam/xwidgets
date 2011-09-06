@@ -48,6 +48,13 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     @Inject
     private DialogueManager manager;
     
+    /**
+     * Returns a URL that the Identity widget can use to perform OpenID authentication
+     * 
+     * @param provider
+     * @param openIdUrl
+     * @return
+     */
     @WebRemote
     public String openIdLogin(String provider, String openIdUrl) {
         OpenIdAjaxAuthenticator authenticator = openIdAuthenticator.get();
@@ -94,6 +101,9 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
         if (dialogueId != null) {
             if (!manager.isExistingDialogue(dialogueId)) {
                 // TODO return an error code here
+                
+                // Something weird happened, end the current dialogue
+                manager.endDialogue();
                 
                 //((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "dialogue " + dialogueId + " does not exist");
                 result.setSuccess(false);
