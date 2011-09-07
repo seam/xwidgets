@@ -102,8 +102,10 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
             if (!manager.isExistingDialogue(dialogueId)) {
                 // TODO return an error code here
                 
-                // Something weird happened, end the current dialogue
-                manager.endDialogue();
+                // Something weird happened, detach the current dialogue
+                if (manager.isAttached()) {
+                    manager.detachDialogue();
+                }
                 
                 //((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "dialogue " + dialogueId + " does not exist");
                 result.setSuccess(false);
