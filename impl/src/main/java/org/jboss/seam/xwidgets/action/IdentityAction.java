@@ -24,6 +24,9 @@ import org.jboss.seam.xwidgets.service.OpenIdAjaxAuthenticator;
 import org.openid4java.message.MessageException;
 import org.openid4java.message.Parameter;
 import org.openid4java.message.ParameterList;
+import org.picketlink.idm.api.AttributesManager;
+import org.picketlink.idm.api.IdentitySession;
+import org.picketlink.idm.common.exception.IdentityException;
 import org.picketlink.idm.impl.api.PasswordCredential;
 
 /**
@@ -35,6 +38,7 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
 
     @Inject Credentials credentials;
     @Inject Identity identity;
+    @Inject Instance<IdentitySession> identitySession;
     
     @Inject Instance<OpenIdAjaxAuthenticator> openIdAuthenticator;
     @Inject Instance<CustomOpenIdProvider> customProvider;
@@ -136,14 +140,20 @@ public @RequestScoped class IdentityAction implements OpenIdRelyingPartySpi {
     }    
            
     @WebRemote
-    public AuthResult login(String username, String password) {
+    public AuthResult login(String username, String password) throws IdentityException {
         identity.setAuthenticatorClass(null);
         credentials.setUsername(username);
         credentials.setCredential(new PasswordCredential(password));
-        
+                
+        AttributesManager attribManager = identitySession.get().getAttributesManager();
         AuthResult result = authResult.get();
         
         result.setSuccess(Identity.RESPONSE_LOGIN_SUCCESS.equals(identity.login()));
+        
+        if (result.isSuccess()) {
+            result.setAttribute("firstName", attribManager.getAttribute(identity.getUser(), "firstName").getValue());
+            result.setAttribute("lastName", attribManager.getAttribute(identity.getUser(), "lastName").getValue());
+        }
         
         return result;
     }
